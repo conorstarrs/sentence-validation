@@ -1,4 +1,9 @@
-# sentence-validation
+# Conor Starrs - Sentence Validation Assignment
+
+## Live Demo
+
+Please visit https://assignment.conorstarrs.dev/ to view a live demo of the application.
+
 
 This project contains source code and supporting files for a serverless application that you can deploy with the SAM CLI. It includes the following files and folders.
 
