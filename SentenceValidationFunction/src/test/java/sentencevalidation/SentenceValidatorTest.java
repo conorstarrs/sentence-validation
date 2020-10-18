@@ -35,7 +35,7 @@ public class SentenceValidatorTest {
     		assertNotNull(content);
     		
     		JSONObject jsonObj = new JSONObject(content);
-    		assertTrue(isValidSentence(jsonObj));    		
+    		assertTrue(jsonObj.getBoolean("isValid"));    		
     	}
     }
 	
@@ -51,7 +51,7 @@ public class SentenceValidatorTest {
     		assertNotNull(content);
     		
     		JSONObject jsonObj = new JSONObject(content);
-    		assertFalse(isValidSentence(jsonObj));    		
+    		assertFalse(jsonObj.getBoolean("isValid"));    		
     	}
     }   
 	
@@ -76,7 +76,7 @@ public class SentenceValidatorTest {
 	    assertNotNull(content);
 
 	    JSONObject jsonObj = new JSONObject(content);
-	    assertTrue((boolean) jsonObj.get("isFirstLetterCapital"));
+	    assertTrue(jsonObj.getJSONObject("validationDetails").getBoolean("isFirstLetterCapital"));
     }
     
     @Test
@@ -88,7 +88,7 @@ public class SentenceValidatorTest {
 	    assertNotNull(content);
 
 	    JSONObject jsonObj = new JSONObject(content);
-	    assertFalse((boolean) jsonObj.get("isFirstLetterCapital"));
+	    assertFalse(jsonObj.getJSONObject("validationDetails").getBoolean("isFirstLetterCapital"));
     }    
     
     @Test
@@ -100,7 +100,7 @@ public class SentenceValidatorTest {
 	    assertNotNull(content);
 
 	    JSONObject jsonObj = new JSONObject(content);
-	    assertTrue((boolean) jsonObj.get("hasEvenNumberOfQuotes"));
+	    assertTrue(jsonObj.getJSONObject("validationDetails").getBoolean("hasEvenNumberOfQuotes"));
     }
     
     @Test
@@ -112,7 +112,7 @@ public class SentenceValidatorTest {
 	    assertNotNull(content);
 
 	    JSONObject jsonObj = new JSONObject(content);
-	    assertFalse((boolean) jsonObj.get("hasEvenNumberOfQuotes"));
+	    assertFalse(jsonObj.getJSONObject("validationDetails").getBoolean("hasEvenNumberOfQuotes"));
     }    
     
     @Test
@@ -124,7 +124,7 @@ public class SentenceValidatorTest {
 	    assertNotNull(content);
 
 	    JSONObject jsonObj = new JSONObject(content);
-	    assertTrue((boolean) jsonObj.get("endsWithAPeriod"));
+	    assertTrue(jsonObj.getJSONObject("validationDetails").getBoolean("endsWithAPeriod"));
     }   
     
     @Test
@@ -136,7 +136,7 @@ public class SentenceValidatorTest {
 	    assertNotNull(content);
 
 	    JSONObject jsonObj = new JSONObject(content);
-	    assertFalse((boolean) jsonObj.get("endsWithAPeriod"));
+	    assertFalse(jsonObj.getJSONObject("validationDetails").getBoolean("endsWithAPeriod"));
     }    
     
     @Test
@@ -148,7 +148,7 @@ public class SentenceValidatorTest {
 	    assertNotNull(content);
 
 	    JSONObject jsonObj = new JSONObject(content);
-	    assertTrue((boolean) jsonObj.get("hasNoPeriodOtherThanLastCharacter"));
+	    assertTrue(jsonObj.getJSONObject("validationDetails").getBoolean("hasNoPeriodOtherThanLastCharacter"));
     }     
     
     @Test
@@ -160,7 +160,7 @@ public class SentenceValidatorTest {
 	    assertNotNull(content);
 
 	    JSONObject jsonObj = new JSONObject(content);
-	    assertFalse((boolean) jsonObj.get("hasNoPeriodOtherThanLastCharacter"));
+	    assertFalse(jsonObj.getJSONObject("validationDetails").getBoolean("hasNoPeriodOtherThanLastCharacter"));
     }     
     
     @Test
@@ -172,7 +172,7 @@ public class SentenceValidatorTest {
 	    assertNotNull(content);
 
 	    JSONObject jsonObj = new JSONObject(content);
-	    assertTrue((boolean) jsonObj.get("hasNoIntegersBelowThirteen"));
+	    assertTrue(jsonObj.getJSONObject("validationDetails").getBoolean("hasNoIntegersBelowThirteen"));
     }     
     
     @Test
@@ -184,7 +184,7 @@ public class SentenceValidatorTest {
 	    assertNotNull(content);
 
 	    JSONObject jsonObj = new JSONObject(content);
-	    assertFalse((boolean) jsonObj.get("hasNoIntegersBelowThirteen"));
+	    assertFalse(jsonObj.getJSONObject("validationDetails").getBoolean("hasNoIntegersBelowThirteen"));
     }     
 
 	private List<String> validSentences() {
@@ -207,13 +207,5 @@ public class SentenceValidatorTest {
 		invalidSentences.add("One lazy dog is too few, 12 is too many.");
 
 		return invalidSentences;
-	}
-
-	private boolean isValidSentence(JSONObject jsonObj) {
-		return (boolean) jsonObj.get("isFirstLetterCapital") && 
-			   (boolean) jsonObj.get("hasEvenNumberOfQuotes") &&
-			   (boolean) jsonObj.get("endsWithAPeriod") &&
-			   (boolean) jsonObj.get("hasNoPeriodOtherThanLastCharacter") &&
-			   (boolean) jsonObj.get("hasNoIntegersBelowThirteen");
 	}
 }

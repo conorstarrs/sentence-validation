@@ -32,22 +32,30 @@ public class SentenceValidator implements RequestHandler<APIGatewayProxyRequestE
         
         // If the body isn't empty, validate the sentence
         String output = input.getBody() != null ? validateSentence(input.getBody().trim()) : "";
-        
+    
 		return response
 				.withStatusCode(200)
 				.withBody(output);
     }
     
 	private String validateSentence(String sentence) {
-		// Return a JSON object with results from each validation for displaying details on the UI
+		// Run each validation, then determine whether or not sentence is valid
+		JSONObject validationDetails = buildDetailedResponse(sentence);
 		String output = new JSONObject()
+                .put("isValid", isValidSentence(validationDetails))
+                .put("validationDetails", validationDetails)
+                .toString();			
+		return output;
+	} 
+
+	private JSONObject buildDetailedResponse(String sentence) {
+		// Return a JSON object with results from each validation for displaying details on the UI
+		return new JSONObject()
 		    .put("isFirstLetterCapital", isFirstLetterCapital(sentence))
 		    .put("hasEvenNumberOfQuotes", isCountOfQuotationMarksEven(sentence))
 		    .put("endsWithAPeriod", endsWithAPeriod(sentence))
 		    .put("hasNoPeriodOtherThanLastCharacter", hasNoPeriodOtherThanLastCharacter(sentence))
-		    .put("hasNoIntegersBelowThirteen", hasNoIntegersBelowThirteen(sentence))
-		    .toString();
-		return output;
+		    .put("hasNoIntegersBelowThirteen", hasNoIntegersBelowThirteen(sentence));
 	}
 
 	private boolean hasNoIntegersBelowThirteen(String sentence) {
@@ -87,4 +95,12 @@ public class SentenceValidator implements RequestHandler<APIGatewayProxyRequestE
 	private static boolean isEven(int count) {
 		return ((count % 2) == 0); 
 	}    
+	
+	private boolean isValidSentence(JSONObject jsonObj) {
+		return jsonObj.getBoolean("isFirstLetterCapital") && 
+			   jsonObj.getBoolean("hasEvenNumberOfQuotes") &&
+			   jsonObj.getBoolean("endsWithAPeriod") &&
+			   jsonObj.getBoolean("hasNoPeriodOtherThanLastCharacter") &&
+			   jsonObj.getBoolean("hasNoIntegersBelowThirteen");
+	}
 }

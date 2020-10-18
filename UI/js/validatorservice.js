@@ -36,8 +36,7 @@ function buildResponse(responseText) {
 }
 
 function renderOverallResult(response, obj) {
-	if(obj.isFirstLetterCapital && obj.hasNoPeriodOtherThanLastCharacter && obj.hasNoIntegersBelowThirteen
-			&& obj.hasEvenNumberOfQuotes && obj.endsWithAPeriod) {
+	if(obj.isValid) {
 		response.innerHTML += "<div class=\"_success\">VALID</div><br />";
 	} else {
 		response.innerHTML += "<div class=\"_danger\">INVALID</div><br />";
@@ -46,22 +45,22 @@ function renderOverallResult(response, obj) {
 
 function renderResultBreakdown(response, obj) {
 	// String starts with a capital letter
-    response.innerHTML += obj.isFirstLetterCapital ? "<img src=\"images/green-tick.png\"> " : "<img src=\"images/red-x.png\"> ";
+    response.innerHTML += obj.validationDetails.isFirstLetterCapital ? "<img src=\"images/green-tick.png\"> " : "<img src=\"images/red-x.png\"> ";
 	response.innerHTML += "String starts with a capital letter<br />";
 	
 	// String has an even number of quotation marks
-	response.innerHTML += obj.hasEvenNumberOfQuotes ? "<img src=\"images/green-tick.png\"> " : "<img src=\"images/red-x.png\"> ";
+	response.innerHTML += obj.validationDetails.hasEvenNumberOfQuotes ? "<img src=\"images/green-tick.png\"> " : "<img src=\"images/red-x.png\"> ";
     response.innerHTML += "String has an even number of quotation marks<br />";
 	
 	// String ends with a period character ".";
-	response.innerHTML += obj.endsWithAPeriod ? "<img src=\"images/green-tick.png\"> " : "<img src=\"images/red-x.png\"> ";
+	response.innerHTML += obj.validationDetails.endsWithAPeriod ? "<img src=\"images/green-tick.png\"> " : "<img src=\"images/red-x.png\"> ";
     response.innerHTML += "String ends with a period character \".\"<br />";
 	
 	// String has no period characters other than the last character
-	response.innerHTML += obj.hasNoPeriodOtherThanLastCharacter ? "<img src=\"images/green-tick.png\"> " : "<img src=\"images/red-x.png\"> ";
+	response.innerHTML += obj.validationDetails.hasNoPeriodOtherThanLastCharacter ? "<img src=\"images/green-tick.png\"> " : "<img src=\"images/red-x.png\"> ";
     response.innerHTML += "String has no period characters other than the last character<br />";
 	
 	// Numbers below 13 are spelled out (”one”, “two”, &quot;three”, etc…)
-	response.innerHTML += obj.hasNoIntegersBelowThirteen ? "<img src=\"images/green-tick.png\"> " : "<img src=\"images/red-x.png\"> ";
+	response.innerHTML += obj.validationDetails.hasNoIntegersBelowThirteen ? "<img src=\"images/green-tick.png\"> " : "<img src=\"images/red-x.png\"> ";
     response.innerHTML += "Numbers below 13 are spelled out (\"one\", \"two\", \"three\", etc...)<br />";
 }	
