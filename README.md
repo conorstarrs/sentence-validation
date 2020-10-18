@@ -1,6 +1,6 @@
 # Conor Starrs - Sentence Validation Assignment
 
-This project contains the source code for a serverless application deployed to Amazon Web Services. 
+This project provides a way to determine whether or not a string is valid, based on a set of rules. The core logic is in a Java class which, for ease of use, as been deployed as a serverless Lambda function on Amazon Web Services. I have also created a vanilla JavaScript UI for ease of interaction with the code. A user is given a full breakdown of the results after submitting a sentence for validation.
 
 ## Live Demo
 
