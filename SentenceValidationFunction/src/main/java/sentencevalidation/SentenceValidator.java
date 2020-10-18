@@ -35,7 +35,7 @@ public class SentenceValidator implements RequestHandler<APIGatewayProxyRequestE
         
 		return response
 				.withStatusCode(200)
-		        .withBody(output);
+				.withBody(output);
     }
     
 	private String validateSentence(String sentence) {
