@@ -1,0 +1,92 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  sentence-validation
+
+  SAM Template for sentence-validation
+
+Globals:
+  Function:
+    Timeout: 20
+
+Resources:
+  SentenceValidationFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: SentenceValidationFunction
+      Handler: sentencevalidation.SentenceValidator::handleRequest
+      Runtime: java8
+      MemorySize: 512
+      Events:
+        SentenceValidation:
+          Type: Api
+          cors: true
+          Properties:
+            Path: /sentence-validation
+            Method: post
+            
+  SentenceValidatorBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      AccessControl: PublicRead
+      WebsiteConfiguration:
+        IndexDocument: index.html
+        ErrorDocument: 404.html
+    DeletionPolicy: Retain
+  SentenceValidatorBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref 'SentenceValidatorBucket'
+      PolicyDocument:
+        Statement:
+        - Sid: PublicReadForGetBucketObjects
+          Effect: Allow
+          Principal: '*'
+          Action: s3:GetObject
+          Resource: !Join ['', ['arn:aws:s3:::', !Ref 'SentenceValidatorBucket', /*]]
+          
+  SentenceValidatorCloudFront:
+    Type: AWS::CloudFront::Distribution
+    DependsOn:
+    - SentenceValidatorBucket
+    Properties:
+      Tags:
+        - Key: waf-enabled
+          Value: true
+      DistributionConfig:
+        Comment: Cloudfront Distribution pointing to S3 bucket for Sentence Validator
+        Origins:
+        - DomainName: !Select [2, !Split ["/", !GetAtt SentenceValidatorBucket.WebsiteURL]]
+          Id: S3Origin
+          CustomOriginConfig:
+            HTTPPort: '80'
+            HTTPSPort: '443'
+            OriginProtocolPolicy: http-only
+        Enabled: true
+        HttpVersion: 'http2'
+        DefaultRootObject: index.html
+        #Aliases:
+        #- !Ref 'FullDomainName'
+        DefaultCacheBehavior:
+          AllowedMethods:
+          - GET
+          - HEAD
+          Compress: true
+          TargetOriginId: S3Origin
+          ForwardedValues:
+            QueryString: true
+            Cookies:
+              Forward: none
+          ViewerProtocolPolicy: redirect-to-https
+        PriceClass: PriceClass_100          
+
+Outputs:
+  SentenceValidationApi:
+    Description: "API Gateway endpoint URL for Prod stage for Sentence Validation function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/sentence-validation/"
+  SentenceValidationFunction:
+    Description: "Sentence Validation Lambda Function ARN"
+    Value: !GetAtt SentenceValidationFunction.Arn
+  SentenceValidatorCloudFront:
+    Value: {"Fn::GetAtt": ["SentenceValidatorCloudFront", "DomainName"]}
+    Description: Endpoint for Cloudfront      

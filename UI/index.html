@@ -1,0 +1,25 @@
+<html>
+<head>
+	<link rel="stylesheet" href="https://rawgit.com/outboxcraft/beauter/master/beauter.min.css">
+	<script type="text/javascript" src="js/validatorservice.js"></script>
+	<title>Conor Starrs</title>
+</head>
+<body>
+<span align="center">
+	<h1>Conor Starrs <br />
+		<small>Sentence Validator Assignment</small>
+	</h1>
+	<form onsubmit="return callAWS();">
+	  <fieldset>
+		<label for="commentField">Sentence</label>
+		<textarea id="sentence" rows="10" cols="50" placeholder="The quick brown...." id="commentField"></textarea>
+		<div class="float-right">
+		</div>
+		<input class="_primary" type="submit" value="Validate">
+	  </fieldset>
+	</form>
+	<div id="response"></div>
+</span>
+</body>
+
+</html>
