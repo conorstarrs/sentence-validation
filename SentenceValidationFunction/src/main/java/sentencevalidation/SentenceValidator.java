@@ -29,10 +29,10 @@ public class SentenceValidator implements RequestHandler<APIGatewayProxyRequestE
         
         APIGatewayProxyResponseEvent response = new APIGatewayProxyResponseEvent()
                 .withHeaders(headers);
-        
+                
         // If the body isn't empty, validate the sentence
         String output = input.getBody() != null ? validateSentence(input.getBody().trim()) : "";
-    
+        	
 		return response
 				.withStatusCode(200)
 				.withBody(output);
@@ -88,8 +88,7 @@ public class SentenceValidator implements RequestHandler<APIGatewayProxyRequestE
 	private boolean isCountOfQuotationMarksEven(String sentence) {
 		// Remove quotes from sentence and deduct from total length to check if even number. 
 		int doubleQuoteCount = sentence.length() - sentence.replace("\"", "").length();
-		int singleQuoteCount = sentence.length() - sentence.replace("\'", "").length();
-		return isEven(doubleQuoteCount) && isEven(singleQuoteCount);
+		return isEven(doubleQuoteCount);
 	}
 
 	private static boolean isEven(int count) {
