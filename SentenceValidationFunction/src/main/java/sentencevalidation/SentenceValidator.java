@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
+import org.apache.commons.lang3.StringUtils;
 import org.json.JSONObject;
 
 import com.amazonaws.services.lambda.runtime.Context;
@@ -31,8 +32,8 @@ public class SentenceValidator implements RequestHandler<APIGatewayProxyRequestE
                 .withHeaders(headers);
                 
         // If the body isn't empty, validate the sentence
-        String output = input.getBody() != null ? validateSentence(input.getBody().trim()) : "";
-        	
+        String output = StringUtils.isNotBlank(input.getBody()) ? validateSentence(input.getBody().trim()) : "";
+  
 		return response
 				.withStatusCode(200)
 				.withBody(output);
