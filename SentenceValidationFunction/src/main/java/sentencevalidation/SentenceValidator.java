@@ -31,14 +31,14 @@ public class SentenceValidator implements RequestHandler<APIGatewayProxyRequestE
         APIGatewayProxyResponseEvent response = new APIGatewayProxyResponseEvent()
                 .withHeaders(headers);
                 
-        // If the body isn't empty, validate the sentence
-        String output = StringUtils.isNotBlank(input.getBody()) ? validateSentence(input.getBody().trim()) : "";
+        // If the body isn't empty, validate the sentence, otherwise respond with invalid input message
+        String output = StringUtils.isNotBlank(input.getBody()) ? validateSentence(input.getBody().trim()) : invalidInput();
   
 		return response
 				.withStatusCode(200)
 				.withBody(output);
     }
-    
+
 	private String validateSentence(String sentence) {
 		// Run each validation, then determine whether or not sentence is valid
 		JSONObject validationDetails = buildDetailedResponse(sentence);
@@ -95,6 +95,14 @@ public class SentenceValidator implements RequestHandler<APIGatewayProxyRequestE
 	private static boolean isEven(int count) {
 		return ((count % 2) == 0); 
 	}    
+	
+	private String invalidInput() {
+		String output = new JSONObject()
+                .put("isValid", false)
+                .put("validationDetails", "Sentence is blank or contains only whitespace. Please try again.")
+                .toString();	
+		return output;
+	}
 	
 	private boolean isValidSentence(JSONObject jsonObj) {
 		return jsonObj.getBoolean("isFirstLetterCapital") && 
