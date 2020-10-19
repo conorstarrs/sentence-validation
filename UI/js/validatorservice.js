@@ -17,7 +17,7 @@ function callAWS() {
     var sentence = document.getElementById("sentence").value;
 	response.innerHTML = "";
     
-	if(sentence !== "") {
+	if(sentence !== "" && sentence.trim().length > 0) {
 		xhttp.open("POST", "https://assignment-api.conorstarrs.dev/sentence-validation", true);
 		xhttp.send(sentence);		
 	} else {
