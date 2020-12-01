@@ -2,10 +2,6 @@
 
 This project provides a way to determine whether or not a string is valid, based on a set of rules. The core logic is in a Java class which, for ease of use, has been deployed as a serverless Lambda function on Amazon Web Services. I have created a vanilla JavaScript and HTML UI to provide a simple way to interact with the code. A user is given a full breakdown of the results after submitting a sentence for validation.
 
-## Live Demo
-
-Please visit https://assignment.conorstarrs.dev/ to view a live demo of the application where you can validate a sentence.
-
 ## Source code file structure
 
 - SentenceValidationFunction/src/main - Code for the application's Lambda function, written in Java.
@@ -25,7 +21,3 @@ If you would like to run the unit tests, please download the source code from gi
 ```bash
 mvn test
 ```
-
-Here are the test results:
-
-![alt text](https://assignment.conorstarrs.dev/images/unit-tests.png)
